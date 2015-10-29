@@ -2,29 +2,44 @@
 #include <iostream>
 #include <math.h>
 
+#define PI 	3.141592653589793238
+
 // Constructions Functions
 Triangle::Triangle()
 	:a(1.0), b(1.0), c(1.0)
 {
-	setControl(a, b, c);
 }
 
 Triangle::Triangle(double x)
 	: a(x), b(1.0), c(1.0)
 {
-	setControl(a, b, c);
+	if (a < 0)
+	{
+		a = 0;
+		b = 0;
+		c = 0;
+	}
 }
 
 Triangle::Triangle(double x, double y)
 	: a(x), b(y), c(1.0)
 {
-	setControl(a, b, c);
+	if (a < 0 || b <= 0)
+	{
+		a = 0;
+		b = 0;
+	}
 }
 
 Triangle::Triangle(double x, double y, double z)
 	: a(x), b(y), c(z)
 {
-	setControl(a, b, c);
+	if (a <= 0 || b <= 0 || c <= 0)
+	{
+		a = 0;
+		b = 0;
+		c = 0;
+	}
 }
 
 // Deconstructions Functions
@@ -36,11 +51,7 @@ Triangle::~Triangle()
 // General Control
 bool Triangle::setControl(double side1, double side2, double side3) 
 {
-	while (controlZero(getSideA(), getSideB(), getSideC()))	// It should be grater than zero.
-	{
-		update();
-	}
-	while (controlSides(getSideA(), getSideB(), getSideC()))		// A total of two sides grater than third side.
+	while (controlSides(getSideA(), getSideB(), getSideC()))
 	{
 		update();
 	}
@@ -55,12 +66,13 @@ bool Triangle::setControl(double side1, double side2, double side3)
 	}
 	else
 	{
-		setScalene(getSideA(), getSideB(), getSideC());
+		setScelene(getSideA(), getSideB(), getSideC());
 	}
 
 	return true;
 }
 
+// silinicek gereksiz
 bool Triangle::controlZero(const double side1, const double side2, const double side3)
 {
 	if (side1 <= 0 || side2 <= 0 || side3 <= 0)
@@ -101,6 +113,16 @@ int Triangle::controlKind(double side1, double side2, double side3)		//
 	}
 }
 
+double Triangle::setControlValue(double value)		// Triangle side length must be grater than zero
+{
+	while (value <= 0)
+	{
+		cout << "Pozitif deðer olmalý! Yeniden: ";
+		cin >> value;
+	}
+	return value;
+}
+
 void Triangle::setEquilateral(double x, double y, double z)		// Equitateral triangle
 {
 	cout << "Eþkenar üçgen oluþturuldu." << endl
@@ -119,7 +141,7 @@ void Triangle::setIsosceles(double x, double y, double z)		// Isosceles triangle
 	return;
 }
 
-void Triangle::setScalene(double x, double y, double z)			// Scalene triangle
+void Triangle::setScelene(double x, double y, double z)			// Scalene triangle
 {
 	cout << "Çeþitkenar üçgen oluþturuldu." << endl
 		<< "Üçgenin çevresi: " << setPrimeterCalc(x, y, z) << " br" << endl
@@ -137,17 +159,16 @@ void Triangle::setAngles(double x, double y, double z)			// Print all angle
 	return;
 }
 
-double Triangle::setAnglesACalc(double x, double y, double z)	// Cosines theorem for cngle A
+double Triangle::setAnglesACalc(double x, double y, double z)	// Cosines theorem for angle A
 {
-	const double PI = 3.14159265;
 	double calcAngle = (-1) * ((x*x - y*y - z*z) / (2 * y*z));
-	setAngleA(acos(calcAngle) * 180 / PI);
-	return acos(calcAngle) * 180 / PI;
+	double result = acos(calcAngle) * 180 / PI;
+	setAngleA(result);
+	return result;
 }
 
 double Triangle::setAnglesBCalc(double x, double y, double z)	// Cosines theorem for angle B
 {
-	const double PI = 3.14159265;
 	double calcAngle = (-1) * ((y*y - x*x - z*z) / (2 * x*z));
 	double result = acos(calcAngle) * 180 / PI;
 	setAngleB(result);
@@ -156,10 +177,10 @@ double Triangle::setAnglesBCalc(double x, double y, double z)	// Cosines theorem
 
 double Triangle::setAnglesCCalc(double x, double y, double z)	// Cosines theorem for angle C
 {
-	const double PI = 3.14159265;
-	double calcAngle = (-1) * ((z*z - a*a - c*c) / (2 * x*y));
-	setAngleC(acos(calcAngle) * 180 / PI);
-	return acos(calcAngle) * 180 / PI;
+	double calcAngle = (-1) * ((z*z - x*x - y*y) / (2 * x*y));
+	double result = acos(calcAngle) * 180 / PI;
+	setAngleC(result);
+	return result;
 }
 
 
@@ -179,34 +200,50 @@ double Triangle::setPrimeterCalc(double x, double y, double z)
 // Input - Output Functions
 void Triangle::input()
 {
+	double value;
 
+	welcome();
+	cout << "Lütfen oluþturmak istediðiniz üçgenin kenar ölçülerini giriniz." << endl;
+
+	update();
+
+	setControl(getSideA(), getSideB(), getSideC());
 }
 
 void Triangle::output()
 {
+	cout << getSideA() << " " << getSideB() << " " << getSideC() << endl;
 }
 
 bool Triangle::update()
 {
-	double x, y, z;
-	cout << "Girilen deðerlerle üçgen oluþmaz lütfen yeniden giriniz: " << endl;
+	double value;
 
 	cout << "A kenarý: ";
-	cin >> x;
-	setSideA(x);
+	cin >> value;
+	value = setControlValue(value);		// Value must be grater than zero
+	setSideA(value);
 	cout;
 
 	cout << "B kenarý: ";
-	cin >> y;
-	setSideB(y);
+	cin >> value;
+	value = setControlValue(value);		// Value must be grater than zero
+	setSideB(value);
 	cout;
 
 	cout << "C kenarý: ";
-	cin >> z;
-	setSideC(z);
+	cin >> value;
+	value = setControlValue(value);		// Value must be grater than zero
+	setSideC(value);
 	cout;
 
 	return true;
+}
+
+void Triangle::welcome()
+{
+	cout << "Welcome the Triangle program! Created by Ozan Yýldýz. ( v2.1.0 )" << endl << endl;
+	return;
 }
 
 void Triangle::errorMessage() const

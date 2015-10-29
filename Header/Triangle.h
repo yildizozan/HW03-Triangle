@@ -23,7 +23,8 @@ public:
 	void setAngleB(double newAngleB) { angleB = newAngleB; }
 	void setAngleC(double newAngleC) { angleC = newAngleC; }
 
-	bool setControl(double, double, double); // all control functions in here
+	bool setControl(double side1, double side2, double side3);	// all control functions in here
+	double setControlValue(double);
 	void setAngles(double, double, double);
 
 	double setAnglesACalc(double, double, double);
@@ -34,9 +35,9 @@ public:
 	// Triangle Variety
 	void setEquilateral(double, double, double);
 	void setIsosceles(double, double, double);
-	void setScalene(double, double, double);
+	void setScelene(double, double, double);
 
-
+	void welcome();
 	void input();
 	void output();
 	bool update();
