@@ -11,19 +11,25 @@ public:
 
 	/* Accessor Functions */
 	// Get Functions
-	double getBorder1() const { return a; }
-	double getBorder2() const { return b; }
-	double getBorder3() const { return c; }
+	double getSideA() const { return a; }
+	double getSideB() const { return b; }
+	double getSideC() const { return c; }
 
 	// Set Functions
-	void setBorder1(double x) { a = x; }
-	void setBorder2(double y) { b = y; }
-	void setBorder3(double z) { c = z; }
+	void setSideA(double x) { a = x; }
+	void setSideB(double y) { b = y; }
+	void setSideC(double z) { c = z; }
 
-	bool setControl(double, double, double);
+//	void setAngleA(double newangleA) { angleA = newangleA; }
+//	void setAngleA(double newangleB) { angleB = newangleB; }
+//	void setAngleA(double newangleC) { angleC = newangleC; }
+
+	bool setControl(double, double, double); // all control functions in here
 
 	void input();
 	void output();
+	bool update();
+	void errorMessage() const;
 
 	bool setAngle(double angleA, double angleB, double angleC);
 	double setArea(double angleA, double angleB, double angleC);
@@ -31,12 +37,11 @@ public:
 
 	
 private:
-	double a;
-	double b;
-	double c;
+	double a, b, c;
+	double angleA, angleB, angleC;
 
-	static bool controlZero(double, double, double);
-	static bool triangleControlBorder(double, double, double);
-	static int triangleControlKind(double, double, double);
+	static bool controlZero(double, double, double);			// Sides must be grater than zero;
+	static bool controlSides(double, double, double);			// A total of two sides grater than third side.
+	static int controlKind(double, double, double);				// 
 };
 

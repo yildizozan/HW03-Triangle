@@ -34,41 +34,38 @@ Triangle::~Triangle()
 {
 }
 
-// Set Functions
-bool Triangle::setControl(double border1, double border2, double border3)
+/* Set Functions */
+// General Control
+bool Triangle::setControl(double side1, double side2, double side3) 
 {
-	if (triangleControlNoZero(border1, border2, border3))
+	while ( controlZero( getSideA(), getSideB(), getSideC() ) )
 	{
-		cout << "Kenarlardan biri herhangi biri sýfýr olamaz" << endl;
-		return false;
+		update();
 	}
-	else if (triangleControlBorder(border1, border2, border3))
+	while ( controlSides(getSideA(), getSideB(), getSideC() ) )
 	{
-		cout << "Üçgen kenarlarý uygun deðil" << endl;
-		return false;
+		update();
+	}
+
+	if (controlKind(side1, side2, side3) == 1)
+	{
+		cout << "Eþkenar üçgen oluþturuldu." << endl;
+	}
+	else if (controlKind(side1, side2, side3) == 2)
+	{
+		cout << "Ýkizkenar üçgen oluþturuldu." << endl;
 	}
 	else
 	{
-		if (triangleControlKind(border1, border2, border3) == 1)
-		{
-			cout << "Eþkenar üçgen oluþturuldu." << endl;
-		}
-		else if (triangleControlKind(border1, border2, border3) == 2)
-		{
-			cout << "Ýkizkenar üçgen oluþturuldu." << endl;
-		}
-		else
-		{
-			cout << "Çeþitkenar üçgen oluþturuldu." << endl;
-		}
-		return true;
+		cout << "Çeþitkenar üçgen oluþturuldu." << endl;
 	}
 
+	return true;
 }
 
-bool Triangle::triangleControlNoZero(double border1, double border2, double border3)
+bool Triangle::controlZero(double side1, double side2, double side3)
 {
-	if (border1 <= 0 || border2 <= 0 || border3 <= 0)
+	if (side1 <= 0 || side2 <= 0 || side3 <= 0)
 	{
 		return true;
 	}
@@ -78,10 +75,9 @@ bool Triangle::triangleControlNoZero(double border1, double border2, double bord
 	}
 }
 
-bool Triangle::triangleControlBorder(double border1, double border2, double border3)
+bool Triangle::controlSides(double side1, double side2, double side3)
 {
-	if (!(border1 < border2 + border3 && border2 < border1 + border3 && border3 < border1 + border2))
-	// ((border1 + border2 <= border3 && border1 + border3 <= border2 && border2 + border3 <= border1))
+	if (!(side1 < side2 + side3 && side2 < side1 + side3 && side3 < side1 + side2))
 	{
 		return true;
 	}
@@ -91,13 +87,13 @@ bool Triangle::triangleControlBorder(double border1, double border2, double bord
 	}
 }
 
-int Triangle::triangleControlKind(double border1, double border2, double border3)
+int Triangle::controlKind(double side1, double side2, double side3)
 {
-	if (border1 == border2 && border2 == border3)
+	if (side1 == side2 && side2 == side3)
 	{
 		return 1;
 	}
-	else if (border1 == border2 || border1 == border3 || border2 == border3)
+	else if (side1 == side2 || side1 == side3 || side2 == side3)
 	{
 		return 2;
 	}
@@ -115,5 +111,32 @@ void Triangle::input()
 
 void Triangle::output()
 {
+}
 
+bool Triangle::update()
+{
+	int x, y, z;
+	cout << "Girilen deðerlerle üçgen oluþmaz lütfen yeniden giriniz: " << endl;
+
+	cout << "A kenarý: ";
+	cin >> x;
+	setSideA(x);
+	cout;
+
+	cout << "B kenarý: ";
+	cin >> y;
+	setSideB(y);
+	cout;
+
+	cout << "C kenarý: ";
+	cin >> z;
+	setSideC(z);
+	cout;
+
+	return true;
+}
+
+void Triangle::errorMessage() const
+{
+	cout << " kenar yanlýþ! Tekrar giriniz: " << endl;
 }
