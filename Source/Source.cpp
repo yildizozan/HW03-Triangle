@@ -6,12 +6,7 @@ int main()
 {
 	setlocale(LC_ALL, "Turkish");
 
-	Triangle example(1,0,0);
-	cout << "-----------" << endl;
-	cout << example.getSideA() << ", " << example.getSideB() << ", " << example.getSideC() << endl;
-	cout << "-----------" << endl;
-	example.output();
-	cout << "-----------" << endl;
+	Triangle example(1,1,0);
 
 	
 	system("PAUSE");
