@@ -1,8 +1,26 @@
+/* 
+ * File:   Triangle.cpp
+ * Author: Ozan YÄ±ldÄ±z
+ * No: 151044082
+ * 
+ * Created on October 28, 2015, 9:58 PM
+ * 
+ * HW03 - Triangle
+ *
+ *      Input:
+ *      Triangle sides
+ * 
+ *      Output:
+ *      Calculate primeter
+ *      Calculate area
+ *      AngleA, AngleB, AngleC
+ *      If triangle is  right angle, to show "Dik Ã¼Ã§gendir" on the screen.
+ */
+
 #include "Triangle.h"
 #include <iostream>
 #include <math.h>
 
-#define PI 	3.141592653589793238
 
 // Constructions Functions
 Triangle::Triangle()
@@ -49,7 +67,7 @@ Triangle::~Triangle()
 
 /* Set Functions */
 // General Control
-bool Triangle::setControl(double side1, double side2, double side3) 
+bool Triangle::setControl(double side1, double side2, double side3)  // Triangle general control
 {
 	while (controlSides(getSideA(), getSideB(), getSideC()))
 	{
@@ -68,24 +86,17 @@ bool Triangle::setControl(double side1, double side2, double side3)
 	{
 		setScelene(getSideA(), getSideB(), getSideC());
 	}
+        if (setRightTriangle())
+        {
+            cout << "Dik Ã¼Ã§gendir kendileri" << endl;
+        }
 
 	return true;
 }
 
-// silinicek gereksiz
-bool Triangle::controlZero(const double side1, const double side2, const double side3)
-{
-	if (side1 <= 0 || side2 <= 0 || side3 <= 0)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
 
-bool Triangle::controlSides(double side1, double side2, double side3)
+
+bool Triangle::controlSides(double side1, double side2, double side3)   // This control is side length
 {
 	if (!(side1 < side2 + side3 && side2 < side1 + side3 && side3 < side1 + side2))
 	{
@@ -97,7 +108,7 @@ bool Triangle::controlSides(double side1, double side2, double side3)
 	}
 }
 
-int Triangle::controlKind(double side1, double side2, double side3)		// 
+int Triangle::controlKind(double side1, double side2, double side3)    // Which one triangle?
 {
 	if (side1 == side2 && side2 == side3)
 	{
@@ -113,53 +124,64 @@ int Triangle::controlKind(double side1, double side2, double side3)		//
 	}
 }
 
-double Triangle::setControlValue(double value)		// Triangle side length must be grater than zero
+double Triangle::setControlValue(double value)  // Triangle side length must be grater than zero
 {
 	while (value <= 0)
 	{
-		cout << "Pozitif deðer olmalý! Yeniden: ";
+		cout << "Pozitif deÃ°er olmalÃ½! Yeniden: ";
 		cin >> value;
 	}
 	return value;
 }
 
-void Triangle::setEquilateral(double x, double y, double z)		// Equitateral triangle
+void Triangle::setEquilateral(const double x, const double y, const double z)   // Equitateral triangle
 {
-	cout << "Eþkenar üçgen oluþturuldu." << endl
-		<< "Üçgenin çevresi: " << setPrimeterCalc(x, y, z) << " br" << endl
-		<< "Üçgenin alaný: " << setAreaCalc(x, y, z) << " br^2" << endl;
+	cout << "EÃ¾kenar Ã¼Ã§gen oluÃ¾turuldu." << endl
+		<< "ÃœÃ§genin Ã§evresi: " << setPrimeterCalc(x, y, z) << " br" << endl
+		<< "ÃœÃ§genin alanÃ½: " << setAreaCalc(x, y, z) << " br^2" << endl;
 	setAngles(x, y, z);
 	return;
 }
 
-void Triangle::setIsosceles(double x, double y, double z)		// Isosceles triangle
+void Triangle::setIsosceles(const double x, const double y, const double z)     // Isosceles triangle
 {
-	cout << "Ýkizkenar üçgen oluþturuldu." << endl
-		<< "Üçgenin çevresi: " << setPrimeterCalc(x, y, z) << " br" << endl
-		<< "Üçgenin alaný: " << setAreaCalc(x, y, z) << " br^2" << endl;
+	cout << "Ãkizkenar Ã¼Ã§gen oluÃ¾turuldu." << endl
+		<< "ÃœÃ§genin Ã§evresi: " << setPrimeterCalc(x, y, z) << " br" << endl
+		<< "ÃœÃ§genin alanÃ½: " << setAreaCalc(x, y, z) << " br^2" << endl;
 	setAngles(x, y, z);
 	return;
 }
 
-void Triangle::setScelene(double x, double y, double z)			// Scalene triangle
+bool Triangle::setRightTriangle()   // Right Triangle Control
 {
-	cout << "Çeþitkenar üçgen oluþturuldu." << endl
-		<< "Üçgenin çevresi: " << setPrimeterCalc(x, y, z) << " br" << endl
-		<< "Üçgenin alaný: " << setAreaCalc(x, y, z) << " br^2" << endl;
+    int control = false;
+    
+    if(getAngleA()==90 || getAngleB()==90 || getAngleC()==90)
+    {
+        control = true;
+    }
+    return control;
+}
+
+void Triangle::setScelene(const double x, const double y, const double z)   // Scalene triangle
+{
+	cout << "Ã‡eÃ¾itkenar Ã¼Ã§gen oluÃ¾turuldu." << endl
+		<< "ÃœÃ§genin Ã§evresi: " << setPrimeterCalc(x, y, z) << " br" << endl
+		<< "ÃœÃ§genin alanÃ½: " << setAreaCalc(x, y, z) << " br^2" << endl;
 	setAngles(x, y, z);
 
 	return;
 }
 
-void Triangle::setAngles(double x, double y, double z)			// Print all angle
+void Triangle::setAngles(const double x, const double y, const double z)    // Print all angle
 {
-	cout << "A açýsý: " << setAnglesACalc(x, y, z) << endl
-		<< "B açýsý: " << setAnglesBCalc(x, y, z) << endl
-		<< "C açýsý: " << setAnglesCCalc(x, y, z) << endl;
+	cout << "A aÃ§Ã½sÃ½: " << setAnglesACalc(x, y, z) << endl
+		<< "B aÃ§Ã½sÃ½: " << setAnglesBCalc(x, y, z) << endl
+		<< "C aÃ§Ã½sÃ½: " << setAnglesCCalc(x, y, z) << endl;
 	return;
 }
 
-double Triangle::setAnglesACalc(double x, double y, double z)	// Cosines theorem for angle A
+double Triangle::setAnglesACalc(const double x, const double y, const double z)	// Cosines theorem for angle A
 {
 	double calcAngle = (-1) * ((x*x - y*y - z*z) / (2 * y*z));
 	double result = acos(calcAngle) * 180 / PI;
@@ -167,7 +189,7 @@ double Triangle::setAnglesACalc(double x, double y, double z)	// Cosines theorem
 	return result;
 }
 
-double Triangle::setAnglesBCalc(double x, double y, double z)	// Cosines theorem for angle B
+double Triangle::setAnglesBCalc(const double x, const double y, const double z)	// Cosines theorem for angle B
 {
 	double calcAngle = (-1) * ((y*y - x*x - z*z) / (2 * x*z));
 	double result = acos(calcAngle) * 180 / PI;
@@ -175,7 +197,7 @@ double Triangle::setAnglesBCalc(double x, double y, double z)	// Cosines theorem
 	return result;
 }
 
-double Triangle::setAnglesCCalc(double x, double y, double z)	// Cosines theorem for angle C
+double Triangle::setAnglesCCalc(const double x, const double y, const double z)	// Cosines theorem for angle C
 {
 	double calcAngle = (-1) * ((z*z - x*x - y*y) / (2 * x*y));
 	double result = acos(calcAngle) * 180 / PI;
@@ -184,14 +206,14 @@ double Triangle::setAnglesCCalc(double x, double y, double z)	// Cosines theorem
 }
 
 
-double Triangle::setAreaCalc(double x, double y, double z)
+double Triangle::setAreaCalc(double x, double y, double z)  // Triangle Area Calc
 {
 	double s = setPrimeterCalc(x, y, z) / 2;
 	double area = sqrt(s*(s - x)*(s - y)*(s - z));
 	return area;
 }
 
-double Triangle::setPrimeterCalc(double x, double y, double z)
+double Triangle::setPrimeterCalc(double x, double y, double z)  // Triangle Primeter Calc
 {
 	return x + y + z;
 }
@@ -203,7 +225,7 @@ void Triangle::input()
 	double value;
 
 	welcome();
-	cout << "Lütfen oluþturmak istediðiniz üçgenin kenar ölçülerini giriniz." << endl;
+	cout << "LÃ¼tfen oluÃ¾turmak istediÃ°iniz Ã¼Ã§genin kenar Ã¶lÃ§Ã¼lerini giriniz." << endl;
 
 	update();
 
@@ -219,21 +241,21 @@ bool Triangle::update()
 {
 	double value;
 
-	cout << "A kenarý: ";
+	cout << "A kenarÃ½: ";
 	cin >> value;
-	value = setControlValue(value);		// Value must be grater than zero
+	value = setControlValue(value);     // Value must be grater than zero
 	setSideA(value);
 	cout;
 
-	cout << "B kenarý: ";
+	cout << "B kenarÃ½: ";
 	cin >> value;
-	value = setControlValue(value);		// Value must be grater than zero
+	value = setControlValue(value);     // Value must be grater than zero
 	setSideB(value);
 	cout;
 
-	cout << "C kenarý: ";
+	cout << "C kenarÃ½: ";
 	cin >> value;
-	value = setControlValue(value);		// Value must be grater than zero
+	value = setControlValue(value);     // Value must be grater than zero
 	setSideC(value);
 	cout;
 
@@ -242,12 +264,8 @@ bool Triangle::update()
 
 void Triangle::welcome()
 {
-	cout << "Welcome the Triangle program! Created by Ozan Yýldýz. ( v2.1.0 )" << endl << endl;
+	cout << "Welcome the Triangle program! Created by Ozan YÃ½ldÃ½z. ( v2.5.6 )" << endl 
+                << "Source is: https://github.com/yildizozann/HW03-Triangle" << endl << endl;
 	return;
-}
-
-void Triangle::errorMessage() const
-{
-	cout << " kenar yanlýþ! Tekrar giriniz: " << endl;
 }
 
